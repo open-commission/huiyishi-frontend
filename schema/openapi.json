@@ -1,0 +1,517 @@
+{
+  "openapi" : "3.1.0",
+  "components" : {
+    "schemas" : {
+      "CreateReservationDTO" : {
+        "type" : "object",
+        "required" : [ "roomId", "startTime", "endTime" ],
+        "description" : "创建预约请求信息",
+        "properties" : {
+          "roomId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "examples" : [ 1 ],
+            "description" : "会议室ID"
+          },
+          "startTime" : {
+            "$ref" : "#/components/schemas/LocalDateTime",
+            "type" : "string",
+            "examples" : [ "2025-12-01T09:00:00" ],
+            "description" : "预约开始时间"
+          },
+          "endTime" : {
+            "$ref" : "#/components/schemas/LocalDateTime",
+            "type" : "string",
+            "examples" : [ "2025-12-01T10:00:00" ],
+            "description" : "预约结束时间"
+          }
+        }
+      },
+      "LocalDateTime" : {
+        "type" : "string",
+        "format" : "date-time"
+      },
+      "LoginDTO" : {
+        "type" : "object",
+        "required" : [ "username", "password" ],
+        "description" : "用户登录信息",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "examples" : [ "张三" ],
+            "description" : "用户名"
+          },
+          "password" : {
+            "type" : "string",
+            "examples" : [ "password123" ],
+            "description" : "密码"
+          },
+          "cardNumber" : {
+            "type" : "string",
+            "examples" : [ "CARD001" ],
+            "description" : "卡号"
+          }
+        }
+      },
+      "RegisterDTO" : {
+        "type" : "object",
+        "required" : [ "username", "password" ],
+        "description" : "用户注册信息",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "examples" : [ "张三" ],
+            "description" : "用户名"
+          },
+          "password" : {
+            "type" : "string",
+            "examples" : [ "password123" ],
+            "description" : "密码"
+          },
+          "cardNumber" : {
+            "type" : "string",
+            "examples" : [ "CARD001" ],
+            "description" : "卡号"
+          }
+        }
+      },
+      "ReservationDTO" : {
+        "type" : "object",
+        "description" : "预约信息",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "预约ID"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "用户ID"
+          },
+          "username" : {
+            "type" : "string",
+            "description" : "用户名"
+          },
+          "roomId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "会议室ID"
+          },
+          "roomName" : {
+            "type" : "string",
+            "description" : "会议室名称"
+          },
+          "startTime" : {
+            "$ref" : "#/components/schemas/LocalDateTime",
+            "type" : "string",
+            "examples" : [ "2022-03-10T12:15:50" ],
+            "description" : "预约开始时间"
+          },
+          "endTime" : {
+            "$ref" : "#/components/schemas/LocalDateTime",
+            "type" : "string",
+            "examples" : [ "2022-03-10T12:15:50" ],
+            "description" : "预约结束时间"
+          },
+          "createdAt" : {
+            "$ref" : "#/components/schemas/LocalDateTime",
+            "type" : "string",
+            "examples" : [ "2022-03-10T12:15:50" ],
+            "description" : "创建时间"
+          }
+        }
+      },
+      "RoomDTO" : {
+        "type" : "object",
+        "description" : "会议室信息",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "会议室ID"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "会议室名称"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "会议室描述"
+          },
+          "available" : {
+            "type" : "boolean",
+            "description" : "是否可用"
+          },
+          "temperature" : {
+            "type" : "number",
+            "format" : "double",
+            "description" : "温度"
+          },
+          "humidity" : {
+            "type" : "number",
+            "format" : "double",
+            "description" : "湿度"
+          },
+          "co2" : {
+            "type" : "number",
+            "format" : "double",
+            "description" : "二氧化碳浓度"
+          },
+          "pm25" : {
+            "type" : "number",
+            "format" : "double",
+            "description" : "PM2.5浓度"
+          },
+          "illumination" : {
+            "type" : "number",
+            "format" : "double",
+            "description" : "光照强度"
+          },
+          "servoStatus" : {
+            "type" : "boolean",
+            "description" : "舵机状态"
+          },
+          "motorStatus" : {
+            "type" : "boolean",
+            "description" : "电机状态"
+          },
+          "deviceConnected" : {
+            "type" : "boolean",
+            "description" : "设备连接状态"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "SecurityScheme" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT",
+        "description" : "Authentication"
+      }
+    }
+  },
+  "tags" : [ {
+    "name" : "会议室管理",
+    "description" : "会议室相关操作API"
+  }, {
+    "name" : "认证管理",
+    "description" : "用户认证相关API"
+  }, {
+    "name" : "设备管理",
+    "description" : "设备通信相关API"
+  }, {
+    "name" : "预约管理",
+    "description" : "会议室预约相关操作API"
+  } ],
+  "paths" : {
+    "/api/auth/login" : {
+      "post" : {
+        "summary" : "用户登录",
+        "description" : "通过用户名和密码进行身份验证并获取访问令牌",
+        "tags" : [ "认证管理" ],
+        "requestBody" : {
+          "description" : "登录信息",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回访问令牌",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "401" : {
+            "description" : "用户名或密码错误"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/auth/register" : {
+      "post" : {
+        "summary" : "用户注册",
+        "description" : "创建一个新的用户账户",
+        "tags" : [ "认证管理" ],
+        "requestBody" : {
+          "description" : "注册信息",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RegisterDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "注册成功",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "用户名已存在"
+          }
+        }
+      }
+    },
+    "/api/devices/report/{roomId}" : {
+      "post" : {
+        "summary" : "接收设备上报消息",
+        "description" : "接收来自设备的会议室状态报告",
+        "tags" : [ "设备管理" ],
+        "parameters" : [ {
+          "name" : "roomId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "设备上报的数据",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "成功接收设备消息",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "404" : {
+            "description" : "会议室不存在"
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/devices/send/{roomId}" : {
+      "post" : {
+        "summary" : "向设备发送消息",
+        "description" : "向指定会议室的设备发送控制命令",
+        "tags" : [ "设备管理" ],
+        "parameters" : [ {
+          "name" : "roomId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "要发送给设备的指令",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "成功发送消息到设备",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "404" : {
+            "description" : "会议室不存在"
+          },
+          "400" : {
+            "description" : "设备离线或无法连接"
+          }
+        }
+      }
+    },
+    "/api/devices/status/{roomId}" : {
+      "get" : {
+        "summary" : "获取设备连接状态",
+        "description" : "获取指定会议室设备的连接状态",
+        "tags" : [ "设备管理" ],
+        "parameters" : [ {
+          "name" : "roomId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "成功获取设备状态",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "404" : {
+            "description" : "会议室不存在"
+          }
+        }
+      }
+    },
+    "/api/reservations" : {
+      "get" : {
+        "summary" : "获取所有预约信息",
+        "description" : "返回系统中所有的会议室预约信息列表",
+        "tags" : [ "预约管理" ],
+        "responses" : {
+          "200" : {
+            "description" : "成功获取预约信息列表",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ReservationDTO"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Not Authorized"
+          },
+          "403" : {
+            "description" : "Not Allowed"
+          }
+        },
+        "security" : [ {
+          "SecurityScheme" : [ "User" ]
+        } ]
+      },
+      "post" : {
+        "summary" : "创建新的预约",
+        "description" : "用户创建一个新的会议室预约",
+        "tags" : [ "预约管理" ],
+        "requestBody" : {
+          "description" : "预约信息",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateReservationDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "预约创建成功"
+          },
+          "400" : {
+            "description" : "请求参数错误"
+          },
+          "404" : {
+            "description" : "会议室不存在"
+          },
+          "409" : {
+            "description" : "会议室在指定时间已被预约"
+          },
+          "401" : {
+            "description" : "Not Authorized"
+          },
+          "403" : {
+            "description" : "Not Allowed"
+          }
+        },
+        "security" : [ {
+          "SecurityScheme" : [ "User" ]
+        } ]
+      }
+    },
+    "/api/reservations/my" : {
+      "get" : {
+        "summary" : "获取当前用户的预约信息",
+        "description" : "返回当前用户的所有会议室预约信息",
+        "tags" : [ "预约管理" ],
+        "responses" : {
+          "200" : {
+            "description" : "成功获取预约信息列表",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ReservationDTO"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Not Authorized"
+          },
+          "403" : {
+            "description" : "Not Allowed"
+          }
+        },
+        "security" : [ {
+          "SecurityScheme" : [ "User" ]
+        } ]
+      }
+    },
+    "/api/rooms" : {
+      "get" : {
+        "summary" : "获取所有会议室",
+        "description" : "返回系统中所有的会议室信息列表",
+        "tags" : [ "会议室管理" ],
+        "responses" : {
+          "200" : {
+            "description" : "成功获取会议室列表",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RoomDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "info" : {
+    "title" : "huiyishi-backend API",
+    "version" : "1.0-SNAPSHOT"
+  }
+}
